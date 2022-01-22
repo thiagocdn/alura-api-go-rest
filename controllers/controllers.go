@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/thiagocdn/alura-api-go-rest/database"
@@ -16,20 +15,20 @@ func Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func TodasPersonalidades(w http.ResponseWriter, r *http.Request) {
-	var p []models.Personalidade
+	var personalidades []models.Personalidade
 
-	database.DB.Find(&p)
+	database.DB.Find(&personalidades)
 
-	json.NewEncoder(w).Encode(p)
+	json.NewEncoder(w).Encode(personalidades)
 }
 
 func RetornaUmaPersonalidade(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	for _, personalidade := range models.Personalidades {
-		if strconv.Itoa(personalidade.Id) == id {
-			json.NewEncoder(w).Encode(personalidade)
-		}
-	}
+	var personalidade models.Personalidade
+
+	database.DB.First(&personalidade, id)
+
+	json.NewEncoder(w).Encode(personalidade)
 }
