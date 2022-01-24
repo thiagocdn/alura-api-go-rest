@@ -15,6 +15,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func TodasPersonalidades(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-type", "application/json")
 	var personalidades []models.Personalidade
 
 	database.DB.Find(&personalidades)
